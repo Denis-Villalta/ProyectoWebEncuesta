@@ -1,0 +1,57 @@
+﻿@{
+    Layout = "";
+}
+
+@model EncuestaEP.Models.Usuarios
+
+@{
+    ViewBag.Title = "Login";
+}
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+
+@using (Html.BeginForm("Login", "Home/Index", FormMethod.Post))
+{
+<fieldset>
+    <legend>Login</legend>
+
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+    @if (@ViewBag.Message != null)
+    {
+        <div style="border: 1px solid red">
+            @ViewBag.Message
+        </div>
+    }
+    <table>
+        <tr>
+            <td>@Html.LabelFor(a => a.username)</td>
+            <td>@Html.TextBoxFor(a => a.username)</td>
+            <td>@Html.ValidationMessageFor(a => a.username)</td>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.LabelFor(a => a.password)
+            </td>
+
+            <td>
+                @Html.PasswordFor(a => a.password)
+            </td>
+            <td>
+                @Html.ValidationMessageFor(a => a.password)
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="submit" value="Iniciar sesión" />
+            </td>
+            <td></td>
+        </tr>
+    </table>
+</fieldset>
+}
+
+
+

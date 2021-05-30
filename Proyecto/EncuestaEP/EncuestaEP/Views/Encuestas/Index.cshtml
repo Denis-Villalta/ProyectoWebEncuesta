@@ -1,0 +1,89 @@
+﻿@model IEnumerable<EncuestaEP.Models.Encuesta>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Encuestas</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Nombre
+        </th>
+        <th>
+            Descripción
+        </th>
+        <th></th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.descripcio)
+            </td>
+            <td>
+                <input type="button" class="btn btn-success" value="Configurar Campos" onclick="modalcampos(@item.id,'@item.nombre');" />
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+            </td>
+
+        </tr>
+    }
+
+</table>
+
+
+<!-- Large modal -->
+
+<div class="modal fade " tabindex="-1" id="modalCampos" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Ingreso de Campos de  la encuesta</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+
+                <div id="PVConsultaCampos"></div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger hvr-grow" data-dismiss="modal">Regresar</button>
+                                                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function modalcampos(id,nombre) {
+
+
+        $("#PVConsultaCampos").load("@Url.Action("listado", "campos")?id="+id);
+
+        $("#modalCampos").modal("show");
+
+
+    }
+
+
+</script>

@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Db_EncuestasModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Campos">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_encuesta" Type="int" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="titulo" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="requerido" Type="bit" Nullable="false" />
+    <Property Name="tipo" Type="tinyint" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Encuesta">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="descripcio" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Respuesta_Detalle">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_campo" Type="int" Nullable="false" />
+    <Property Name="valor" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="id_encabezado" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Respuesta_Encabezado">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="id_encuesta" Type="int" Nullable="false" />
+    <Property Name="fecha" Type="date" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Usuarios">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="username" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="password" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Campos_Encuesta">
+    <End Role="Encuesta" Type="Self.Encuesta" Multiplicity="1" />
+    <End Role="Campos" Type="Self.Campos" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Encuesta">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Campos">
+        <PropertyRef Name="id_encuesta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Respuesta_Detalle_Campos">
+    <End Role="Campos" Type="Self.Campos" Multiplicity="1" />
+    <End Role="Respuesta_Detalle" Type="Self.Respuesta_Detalle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Campos">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Respuesta_Detalle">
+        <PropertyRef Name="id_campo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Respuesta_Detalle_Respuesta_Encabezado">
+    <End Role="Respuesta_Encabezado" Type="Self.Respuesta_Encabezado" Multiplicity="1" />
+    <End Role="Respuesta_Detalle" Type="Self.Respuesta_Detalle" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Respuesta_Encabezado">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Respuesta_Detalle">
+        <PropertyRef Name="id_encabezado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Respuesta_Encabezado_Encuesta">
+    <End Role="Encuesta" Type="Self.Encuesta" Multiplicity="1" />
+    <End Role="Respuesta_Encabezado" Type="Self.Respuesta_Encabezado" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Encuesta">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="Respuesta_Encabezado">
+        <PropertyRef Name="id_encuesta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Db_EncuestasModelStoreContainer">
+    <EntitySet Name="Campos" EntityType="Self.Campos" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Encuesta" EntityType="Self.Encuesta" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Respuesta_Detalle" EntityType="Self.Respuesta_Detalle" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Respuesta_Encabezado" EntityType="Self.Respuesta_Encabezado" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Campos_Encuesta" Association="Self.FK_Campos_Encuesta">
+      <End Role="Encuesta" EntitySet="Encuesta" />
+      <End Role="Campos" EntitySet="Campos" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Respuesta_Detalle_Campos" Association="Self.FK_Respuesta_Detalle_Campos">
+      <End Role="Campos" EntitySet="Campos" />
+      <End Role="Respuesta_Detalle" EntitySet="Respuesta_Detalle" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Respuesta_Detalle_Respuesta_Encabezado" Association="Self.FK_Respuesta_Detalle_Respuesta_Encabezado">
+      <End Role="Respuesta_Encabezado" EntitySet="Respuesta_Encabezado" />
+      <End Role="Respuesta_Detalle" EntitySet="Respuesta_Detalle" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Respuesta_Encabezado_Encuesta" Association="Self.FK_Respuesta_Encabezado_Encuesta">
+      <End Role="Encuesta" EntitySet="Encuesta" />
+      <End Role="Respuesta_Encabezado" EntitySet="Respuesta_Encabezado" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

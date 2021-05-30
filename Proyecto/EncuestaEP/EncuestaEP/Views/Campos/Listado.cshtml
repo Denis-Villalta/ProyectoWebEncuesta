@@ -1,0 +1,127 @@
+﻿
+@model EncuestaEP.Models.CamposViewModel
+
+<h3>
+</h3>
+
+
+<table class="table">
+    <tr>
+        <th>
+            Nombre
+        </th>
+        <th>
+           Titulo
+        </th>
+        <th>
+            Requerido
+        </th>
+        <th>
+            Tipo
+        </th>
+
+        <th></th>
+    </tr>
+
+    <tr>
+        <th>
+            <input type="text" class="form-control" id="txtnombre" />
+        </th>
+        <th>
+
+            <input type="text" class="form-control" id="txttitulo" />
+        </th>
+        <th>
+
+            <input type="checkbox" class="form-control" id="chrequerido" />
+        </th>
+        <th>
+
+            <select id="ddltipo">
+                <option value="1">1. Texto</option>
+                <option value="2">2. Número</option>
+                <option value="3">3. Fecha</option>
+            </select>
+        </th>
+
+        <th>
+            <input type="button" class="btn btn-success" value="Agregar" onclick="ingresar();" />
+        </th>
+
+    </tr>
+
+
+    @foreach (var item in Model.lst_campos)
+    {
+        <tr>
+            <td>
+                @item.nombre
+            </td>
+            <td>
+                @item.titulo
+            </td>
+            <td>
+                @item.requerido
+            </td>
+            <td>
+                @item.tipo
+            </td>
+            
+            <td>
+               
+               <input type="button" class="btn btn-warning" value="Eliminar"  onclick="eliminar(@item.id)"/>
+            </td>
+        </tr>
+    }
+</table>
+
+
+
+
+<script>
+
+    var idencabezado = "@Model.id_encuesta";
+
+    function ingresar(){
+
+        var nombre =     $("#txtnombre").val();
+        var titulo =    $("#txttitulo").val();
+        var requerido = $("#chrequerido").is(':checked');
+        var tipo =       $("#ddltipo").val();
+
+        if (nombre != "") {
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("ingresar","Campos")',
+                        data: { nombre:nombre,titulo:titulo,requerido:requerido,tipo:tipo},
+                        success: function (response) {
+                            if (response == "ok") {
+                                //$("#txtnombre").val("");
+                                //$("#txttitulo").val("");
+                                //$("#chrequerido").prop("checked", false);
+                                //$("#ddltipo").val(1);
+                                
+                                modalcampos(idencabezado);
+                            }
+
+                        }
+                    });
+        }
+    }
+
+     function eliminar(id){
+                    $.ajax({
+                        type: "GET",
+                        url: '@Url.Action("eliminar","Campos")',
+                        data: { id:id},
+                        success: function (response) {
+                            if (response == "ok") {
+                               
+                               
+                                modalcampos(idencabezado);
+                            }
+
+                        }
+                    });
+            }
+</script>
